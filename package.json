@@ -1,0 +1,12 @@
+{
+  "name": "sift",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "npm run dev --workspace=packages/api",
+    "build:api": "npm run build --workspace=packages/api",
+    "db:migrate": "echo 'Run db/migrations/0001_init.sql in your Neon SQL Editor, or wire up drizzle-kit push later'"
+  }
+}
