@@ -4,6 +4,9 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { attachSession } from "./middleware/auth";
 import { authRouter } from "./routes/auth";
+import { jobsRouter } from "./routes/jobs";
+import { pipelineRouter } from "./routes/pipeline";
+import { interviewsRouter } from "./routes/interviews";
 
 const app = express();
 
@@ -22,6 +25,9 @@ app.get("/api/health", (_req, res) => {
 });
 
 app.use("/api/auth", authRouter);
+app.use("/api/jobs", jobsRouter);
+app.use("/api", pipelineRouter); // exposes /api/applications
+app.use("/api/interviews", interviewsRouter);
 
 // 404 handler — per functional spec, every route path resolves to something,
 // never a silent hang.
