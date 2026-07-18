@@ -1,5 +1,5 @@
 {
-  "buildCommand": "npm install --include=dev && npm run build --workspace=packages/web",
+  "buildCommand": "npm install --include=dev && npm run build --workspace=packages/shared && npm run build --workspace=packages/api && npm run build --workspace=packages/web",
   "outputDirectory": "packages/web/dist",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
