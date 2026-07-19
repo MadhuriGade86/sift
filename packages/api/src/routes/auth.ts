@@ -76,6 +76,31 @@ authRouter.post("/signup", async (req, res) => {
   await rotateSession(res, user.id);
   return res.status(201).json(GENERIC_EMAIL_SENT_MESSAGE);
 });
+// ============================================
+// POST /api/auth/resend-verification
+// ============================================
+authRouter.post("/resend-verification", requireAuth, async (req, res) => {
+  const [user] = await db
+    .select({ id: appUser.id, email: appUser.email, emailVerified: appUser.emailVerified })
+    .from(appUser)
+    .where(eq(appUser.id, req.user.id));
+
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+  if (user.emailVerified) {
+    return res.status(200).json({ message: "Email already verified" });
+  }
+
+  const verifyToken = await createEmailVerificationToken(user.id);
+  await sendEmail({
+    to: user.email,
+    subject: "Verify your Sift account",
+    html: verificationEmailHtml(`${process.env.APP_URL}/verify-email?token=${verifyToken}`),
+  });
+
+  return res.status(200).json(GENERIC_EMAIL_SENT_MESSAGE);
+});
 
 // ============================================================
 // POST /api/auth/login

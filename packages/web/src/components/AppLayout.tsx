@@ -18,11 +18,17 @@ export function AppLayout() {
           Sift
         </Link>
         <div className="flex items-center gap-4">
-          {user && !user.emailVerified && (
-            <span className="rounded-pill bg-accent/10 px-3 py-1 text-xs font-medium text-accent">
-              Verify your email to unlock full access
-            </span>
-          )}
+{user && !user.emailVerified && (
+  <button
+    className="rounded-pill bg-accent/10 px-3 py-1 text-sm hover:bg-accent/20"
+    onClick={async () => {
+      await fetch("/api/auth/resend-verification", { method: "POST", credentials: "include" });
+      alert("Verification email sent — check your inbox.");
+  }}
+>
+  Verify your email to unlock full access
+</button>
+)}
           <Button variant="ghost" onClick={handleLogout}>
             Sign out
           </Button>
